@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwsztar.domain.dto.CreateMovieDto;
 import pl.edu.pwsztar.domain.dto.MovieCounterDto;
 import pl.edu.pwsztar.domain.dto.MovieDto;
+import pl.edu.pwsztar.domain.repository.MovieRepository;
 import pl.edu.pwsztar.service.MovieService;
 
 import java.util.List;
@@ -60,8 +61,8 @@ public class MovieApiController {
     public ResponseEntity<MovieCounterDto> countMovies() {
         LOGGER.info("count movies");
 
-        // TODO: Prosze dokonczyc implementacje
-        return new ResponseEntity<>(new MovieCounterDto(), HttpStatus.OK);
+        long amountOfMovies = movieService.findAll().size();
+        return new ResponseEntity<>(new MovieCounterDto(amountOfMovies), HttpStatus.OK);
     }
 
 }
