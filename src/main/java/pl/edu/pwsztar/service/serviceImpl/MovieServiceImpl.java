@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.pwsztar.domain.converter.Converter;
 import pl.edu.pwsztar.domain.dto.CreateMovieDto;
 import pl.edu.pwsztar.domain.dto.MovieDto;
 import pl.edu.pwsztar.domain.entity.Movie;
@@ -21,13 +22,13 @@ public class MovieServiceImpl implements MovieService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     private final MovieRepository movieRepository;
-    private final MovieListMapper movieListMapper;
-    private final MovieMapper movieMapper;
+    private final Converter<List<Movie>, List<MovieDto>> movieListMapper;
+    private final Converter<CreateMovieDto, Movie> movieMapper;
 
     @Autowired
     public MovieServiceImpl(MovieRepository movieRepository,
-                            MovieListMapper movieListMapper,
-                            MovieMapper movieMapper) {
+                            Converter<List<Movie>, List<MovieDto>> movieListMapper,
+                            Converter<CreateMovieDto, Movie> movieMapper) {
 
         this.movieRepository = movieRepository;
         this.movieListMapper = movieListMapper;
