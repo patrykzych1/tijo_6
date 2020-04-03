@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pwsztar.domain.converter.Converter;
 import pl.edu.pwsztar.domain.dto.CreateMovieDto;
+import pl.edu.pwsztar.domain.dto.MovieCounterDto;
 import pl.edu.pwsztar.domain.dto.MovieDto;
 import pl.edu.pwsztar.domain.entity.Movie;
-import pl.edu.pwsztar.domain.mapper.MovieListMapper;
-import pl.edu.pwsztar.domain.mapper.MovieMapper;
 import pl.edu.pwsztar.domain.repository.MovieRepository;
 import pl.edu.pwsztar.service.MovieService;
 
@@ -24,15 +23,18 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final Converter<List<Movie>, List<MovieDto>> movieListMapper;
     private final Converter<CreateMovieDto, Movie> movieMapper;
+    private final Converter<Long, MovieCounterDto> movieCounterDtoMapper;
 
     @Autowired
     public MovieServiceImpl(MovieRepository movieRepository,
                             Converter<List<Movie>, List<MovieDto>> movieListMapper,
-                            Converter<CreateMovieDto, Movie> movieMapper) {
+                            Converter<CreateMovieDto, Movie> movieMapper,
+                            Converter<Long, MovieCounterDto> movieCounterDtoMapper) {
 
         this.movieRepository = movieRepository;
         this.movieListMapper = movieListMapper;
         this.movieMapper = movieMapper;
+        this.movieCounterDtoMapper = movieCounterDtoMapper;
     }
 
     @Override
@@ -51,6 +53,11 @@ public class MovieServiceImpl implements MovieService {
     public void deleteMovie(Long movieId) {
         Optional<Movie> movieOptional = movieRepository.findById(movieId);
         movieOptional.ifPresent(movieRepository::delete);
+    }
+
+    @Override
+    public MovieCounterDto countMovies() {
+        return movieCounterDtoMapper.convert((long) findAll().size());
     }
 
 
