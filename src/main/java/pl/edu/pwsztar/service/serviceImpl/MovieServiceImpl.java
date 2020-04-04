@@ -57,7 +57,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieCounterDto countMovies() {
-        return movieCounterDtoMapper.convert((long) findAll().size());
+        return movieCounterDtoMapper.convert(movieRepository.count());
     }
 
 
